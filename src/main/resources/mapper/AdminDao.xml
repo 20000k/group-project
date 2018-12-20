@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--命名空间:尽量写入dao层指定接口的路径-->
+<mapper namespace="com.qf.dao.AdminDao">
+    <!--搜查查询-->
+    <select id="listAdmins" resultType="com.qf.pojo.po.Admin">
+        SELECT * from admin
+        <where>
+            <if test="search!=null and search!=''">
+                ausername like "%${search}%"
+            </if>
+        </where>
+        limit #{offset},#{limit}
+    </select>
+
+    <!--条件查询出数量-->
+    <select id="totalCountAdmins" resultType="java.lang.Long">
+        SELECT count(1) from admin
+        <where>
+            <if test="search!=null and search!=''">
+                ausername like "%${search}%"
+            </if>
+        </where>
+    </select>
+
+    <select id="getAdminByAid" resultType="com.qf.pojo.po.Admin">
+        SELECT * from admin where aid=#{aid}
+    </select>
+
+    <!--修改管理员数据-->
+    <update id="updateAdmin" parameterType="com.qf.pojo.po.Admin">
+        UPDATE admin set ausername=#{ausername},apassword=#{apassword},phone=#{phone},aemail=#{aemail} where aid=#{aid}
+    </update>
+
+    <!--删除管理员-->
+    <delete id="deleteByAid" parameterType="com.qf.pojo.po.Admin">
+        delete from admin where aid=#{aid}
+    </delete>
+
+    <!--新增管理员-->
+    <insert id="saveAdmin" parameterType="com.qf.pojo.po.Admin">
+        INSERT INTO admin(ausername,apassword,phone,aemail,logintime,loginip) VALUES(#{ausername},#{apassword},#{phone},#{aemail},#{logintime},#{loginip})
+    </insert>
+</mapper>

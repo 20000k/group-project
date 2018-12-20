@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qf.dao.ProductDao">
+    <select id="listProducts" resultType="com.qf.pojo.po.Product">
+        SELECT * from product
+        <where>
+           <if test="search!=null and search!=''">
+              pname like '%${search}%'
+           </if>
+        </where>
+        limit #{offset},#{limit}
+    </select>
+    <select id="totalPage" resultType="java.lang.Long">
+        SELECT count(1) from product
+        <where>
+            <if test="search!=null and search!=''">
+                pname like '%${search}%'
+            </if>
+        </where>
+    </select>
+    <select id="getProductByPid" resultType="com.qf.pojo.po.Product">
+        SELECT * from product where pid=#{pid}
+    </select>
+    <delete id="deleteProductByPid" >
+        DELETE from product where pid=#{pid}
+    </delete>
+    <update id="updateProduct" >
+        UPDATE product set pname=#{pname},market_price=#{market_price},shop_price=#{shop_price},pimage=#{pimage},pdesc=#{pdesc},is_hot=#{is_hot},pdate=#{pdate},cname=#{cname} where pid=#{pid}
+    </update>
+    <insert id="addProduct" >
+        insert into product values(#{pid},#{pname},#{market_price},#{shop_price},#{pimage},#{pdesc},#{is_hot},#{pdate},#{cname})
+    </insert>
+
+    <select id="getProducts" resultType="com.qf.pojo.po.Product">
+        SELECT * from product limit #{offset},#{pageSize}
+    </select>
+
+    <select id="getTotalPage" resultType="java.lang.Integer" >
+        SELECT count(*) from product
+    </select>
+</mapper>

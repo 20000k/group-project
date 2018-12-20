@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qf.dao.OrderDao">
+    <select id="listOrders" resultType="com.qf.pojo.po.Order">
+        SELECT * FROM orderform limit #{index},#{pageSize}
+    </select>
+
+    <select id="getOrderNumber" resultType="int">
+        SELECT COUNT(*) FROM orderform
+    </select>
+
+    <select id="getOrderById" resultType="com.qf.pojo.po.Order">
+        SELECT * FROM orderform
+        <where>
+            <if test="id!=0">
+                id=#{id}
+            </if>
+        </where>
+        limit #{index},#{pageSize}
+    </select>
+
+    <delete id="deleteOrderById">
+        DELETE FROM orderform WHERE id=#{id}
+    </delete>
+
+    <update id="updateOrder" parameterType="com.qf.pojo.po.Order">
+        UPDATE orderform SET pid=#{pid},pname=#{pname},price=#{price},pnumber=#{pnumber} ,totalPrice=#{totalPrice},commodity=#{commodity},state=#{state},username=#{username}  WHERE id=#{id}
+    </update>
+
+    <insert id="addOrder" parameterType="com.qf.pojo.po.Order">
+        INSERT INTO orderform (pid,pname,price,pnumber,totalPrice,proute,commodity,state,username)
+        VALUES(#{pid},#{pname},#{price},#{pnumber},#{totalPrice},#{proute},#{commodity},#{state},#{username})
+    </insert>
+</mapper>
